@@ -1,131 +1,142 @@
 # School Fee Reconciliation System
 
-A Python-based school fee reconciliation tool that processes invoice and payment records from CSV files and generates a clear report showing paid amounts, outstanding balances, and overpayments.
+A Python-based command-line application that reconciles school invoices with payment records using accurate monetary calculations, input validation, duplicate detection, and CSV reporting.
+
+The project demonstrates how Python can automate a school finance workflow and help identify paid invoices, outstanding balances, pending payments, and overpayments.
+
+## Project Overview
+
+Schools need a reliable way to compare issued fee invoices with received payments. This project processes invoice and payment CSV files, validates the records, and generates a reconciliation report for each invoice.
 
 ## Features
 
-- Reads invoice and payment records from CSV files.
-- Uses Python's `Decimal` for accurate monetary calculations.
-- Counts only `POSTED` payments as paid.
-- Identifies exact duplicate payments.
-- Rejects conflicting duplicate payment IDs.
-- Validates invoice and payment amounts.
-- Detects payments linked to unknown invoices.
-- Calculates outstanding balances without negative values.
-- Reports overpayments separately as credits.
-- Generates a CSV reconciliation report.
-- Includes automated tests using pytest.
+- **Invoice Reconciliation:** Matches payment records with the correct invoice.
+- **Accurate Money Calculations:** Uses Python's `Decimal` for financial calculations instead of floating-point arithmetic.
+- **Payment Status Handling:** Counts `POSTED` payments and excludes `PENDING` payments from the paid total.
+- **Duplicate Detection:** Counts identical duplicate payment records only once and rejects conflicting records with the same payment ID.
+- **Input Validation:** Checks monetary values, invoice IDs, payment IDs, and invoice references.
+- **Outstanding Balance:** Calculates the remaining amount without allowing a negative outstanding balance.
+- **Overpayment Tracking:** Reports excess payments separately as credit.
+- **CSV Reporting:** Reads invoice and payment data from CSV files and exports a reconciliation report.
+- **Automated Tests:** Includes tests for calculations, validation, duplicates, and repeatability.
 
 ## Technologies Used
 
-- Python 3.10+
+- Python 3
 - CSV
 - Decimal
-- pytest
+- Pytest
+- Git and GitHub
 
 ## Project Structure
 
 ```text
-school-operations/
+School-Fee-Reconciliation-System/
+│
 ├── school_ops/
 │   ├── __init__.py
 │   ├── money.py
 │   ├── validation.py
 │   ├── reconciliation.py
 │   └── cli.py
+│
 ├── sample_data/
 │   ├── invoices.csv
 │   ├── payments.csv
 │   └── reconciliation_report.csv
+│
 ├── tests/
 │   ├── test_money.py
 │   ├── test_reconciliation.py
 │   ├── test_duplicates.py
-│   └── test_validation.py
-├── docs/
-├── .venv/
+│   ├── test_validation.py
+│   ├── test_money_validation.py
+│   └── test_repeatability.py
+│
+├── .gitignore
 └── README.md
 ```
 
 ## Getting Started
 
-### 1. Clone the repository
+### Prerequisites
+
+- Python 3.10 or a compatible Python 3 version
+- pip
+- A terminal or command prompt
+
+### 1. Clone the Repository
 
 ```bash
-git clone YOUR_REPOSITORY_URL
-cd school-operations
+git clone https://github.com/bushra-iqbal-png/School-Fee-Reconciliation-System.git
 ```
 
-Replace `YOUR_REPOSITORY_URL` with your actual GitHub repository URL.
+### 2. Open the Project Directory
 
-### 2. Create and activate a virtual environment
+```bash
+cd School-Fee-Reconciliation-System
+```
 
-On Windows PowerShell:
+### 3. Create a Virtual Environment
 
-```powershell
+```bash
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
 ```
 
-### 3. Install pytest
+Activate it on Windows:
 
-```powershell
+```bash
+.venv\Scripts\activate
+```
+
+### 4. Install the Testing Dependency
+
+```bash
 python -m pip install pytest
 ```
 
-### 4. Run the reconciliation system
+### 5. Run the Reconciliation System
 
-```powershell
+```bash
 python -m school_ops.cli
 ```
 
-The program reads the CSV files in `sample_data` and creates `reconciliation_report.csv` in the same folder.
+The application reads the sample invoice and payment files, displays the reconciliation results in the terminal, and saves the report to `sample_data/reconciliation_report.csv`.
 
-### 5. Run automated tests
+## Run the Tests
 
-```powershell
+Run the automated test suite with:
+
+```bash
 python -m pytest -v
 ```
 
-## Sample Results
+The existing tests cover monetary calculations, invoice reconciliation, duplicate payments, input validation, and repeatability.
 
-| Invoice Status | Meaning |
-|---|---|
-| PAID | The invoice has been fully paid. |
-| PARTIALLY PAID | Some amount remains outstanding. |
-| OVERPAID | The payment exceeds the invoice amount. |
-| UNPAID | No posted payment has been received. |
+## Input Data
 
-Pending payments are not included in the paid total.
+### Invoices CSV
 
-## Data Validation
+The invoice file contains the invoice ID, student name, and invoice amount.
 
-The system checks monetary values, invoice references, payment statuses, and duplicate payment IDs. Exact duplicate records are counted once, while conflicting records with the same payment ID are rejected.
+```csv
+invoice_id,student_name,amount
+INV001,Ali,1000.00
+INV002,Sara,1500.00
+```
 
-## Learning Goals
+### Payments CSV
 
-This project demonstrates practical Python skills, including:
+The payment file contains the payment ID, associated invoice ID, payment amount, and payment status.
 
-- Functions and modules
-- CSV file handling
-- Decimal-based financial calculations
-- Input validation and exception handling
-- Data reconciliation
-- Automated testing with pytest
+```csv
+payment_id,invoice_id,amount,status
+PAY001,INV001,1000.00,POSTED
+PAY002,INV002,500.00,POSTED
+PAY003,INV002,200.00,POSTED
+```
 
-## Future Improvements
-
-- Export summary reports with additional filters.
-- Add logging and clearer error reports.
-- Build a web-based dashboard.
-- Add secure user access and database integration.
-
-
-## Example Output
-
-The reconciliation system produces an invoice-wise report containing the invoice amount, posted payments, outstanding balance, credit amount, and payment status.
-
-Example:
+## Example Reconciliation Results
 
 | Invoice ID | Invoice Amount | Total Paid | Outstanding | Credit | Status |
 |---|---:|---:|---:|---:|---|
@@ -134,32 +145,37 @@ Example:
 | INV003 | 2000.00 | 2500.00 | 0.00 | 500.00 | OVERPAID |
 | INV004 | 800.00 | 0.00 | 800.00 | 0.00 | UNPAID |
 
-*These figures illustrate the expected output for the sample records.*
+*Illustrative example of the reconciliation logic.*
 
-## Running the Tests
+## Business Rules
 
-Run the automated test suite with:
+1. Invoice and payment amounts must be greater than zero and support no more than two decimal places.
+2. Only `POSTED` payments contribute to the total paid amount.
+3. `PENDING` payments do not reduce the outstanding balance.
+4. An identical duplicate payment ID is counted only once.
+5. A conflicting record with an existing payment ID must be rejected.
+6. Payments must reference an existing invoice.
+7. Outstanding balances cannot be negative.
+8. Any overpayment is reported separately as credit.
 
-```powershell
-python -m pytest -v
-```
+## Project Scope
 
-## Important Notes
+This is a command-line Python project that processes CSV files and generates a reconciliation report. It is not a complete school management website or an online fee collection system.
 
-- Only payments with `POSTED` status count toward the paid total.
-- `PENDING` payments are excluded from the paid total.
-- Exact duplicate payment records are counted once.
-- Conflicting records with the same payment ID are rejected.
-- Overpayments are reported separately as credits.
-- The report is generated as a CSV file that can be opened in spreadsheet software.
+## Future Improvements
 
-## Current Scope
-
-This project is a command-line learning application. It processes CSV files and generates a reconciliation report. It is not yet a complete school management system and does not currently include a web dashboard, database integration, or user authentication.
-
+- Add a database for persistent invoice and payment records.
+- Develop a web-based dashboard for school administrators.
+- Add secure user authentication and role-based access.
+- Support downloadable financial reports and reconciliation summaries.
+- Integrate with an authorized payment system.
 
 ## Author
 
 **Bushra Iqbal**
 
-Python learner | Web Development Student
+Python Learner | Web Development Student
+
+GitHub: [bushra-iqbal-png](https://github.com/bushra-iqbal-png)
+
+This project is part of my learning journey in Python programming, data validation, financial calculations, automation, and software testing.
