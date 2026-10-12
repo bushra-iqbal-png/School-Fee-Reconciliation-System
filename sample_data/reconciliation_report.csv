@@ -1,0 +1,5 @@
+invoice_id,student_name,invoice_amount,total_paid,outstanding,credit,status
+INV001,Ali,1000.00,1000.00,0.00,0.00,PAID
+INV002,Sara,1500.00,700.00,800.00,0.00,PARTIALLY PAID
+INV003,Ahmed,2000.00,2500.00,0.00,500.00,OVERPAID
+INV004,Ayesha,800.00,0.00,800.00,0.00,UNPAID
