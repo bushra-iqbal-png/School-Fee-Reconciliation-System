@@ -120,6 +120,44 @@ This project demonstrates practical Python skills, including:
 - Build a web-based dashboard.
 - Add secure user access and database integration.
 
+
+## Example Output
+
+The reconciliation system produces an invoice-wise report containing the invoice amount, posted payments, outstanding balance, credit amount, and payment status.
+
+Example:
+
+| Invoice ID | Invoice Amount | Total Paid | Outstanding | Credit | Status |
+|---|---:|---:|---:|---:|---|
+| INV001 | 1000.00 | 1000.00 | 0.00 | 0.00 | PAID |
+| INV002 | 1500.00 | 700.00 | 800.00 | 0.00 | PARTIALLY PAID |
+| INV003 | 2000.00 | 2500.00 | 0.00 | 500.00 | OVERPAID |
+| INV004 | 800.00 | 0.00 | 800.00 | 0.00 | UNPAID |
+
+*These figures illustrate the expected output for the sample records.*
+
+## Running the Tests
+
+Run the automated test suite with:
+
+```powershell
+python -m pytest -v
+```
+
+## Important Notes
+
+- Only payments with `POSTED` status count toward the paid total.
+- `PENDING` payments are excluded from the paid total.
+- Exact duplicate payment records are counted once.
+- Conflicting records with the same payment ID are rejected.
+- Overpayments are reported separately as credits.
+- The report is generated as a CSV file that can be opened in spreadsheet software.
+
+## Current Scope
+
+This project is a command-line learning application. It processes CSV files and generates a reconciliation report. It is not yet a complete school management system and does not currently include a web dashboard, database integration, or user authentication.
+
+
 ## Author
 
 **Bushra Iqbal**
