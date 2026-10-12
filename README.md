@@ -147,6 +147,22 @@ PAY003,INV002,200.00,POSTED
 
 *Illustrative example of the reconciliation logic.*
 
+---
+
+## Screenshots
+
+### Reconciliation Report
+
+![Reconciliation Report](docs/screenshots/reconciliation-report.png)
+
+### Automated Test Results
+
+![Automated Test Results](docs/screenshots/test-results.png)
+
+### Generated CSV Report
+
+![Generated CSV Report](docs/screenshots/csv-report.png)
+
 ## Business Rules
 
 1. Invoice and payment amounts must be greater than zero and support no more than two decimal places.
